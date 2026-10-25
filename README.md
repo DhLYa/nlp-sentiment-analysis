@@ -84,6 +84,17 @@ Figures: [MaxEnt](figures/MaxEnt_ConfMat.png), [LinearSVC](figures/LSVC_ConfMat.
 
 The classic models' scores are unchanged. The LSTM's dev score is about the same (0.613 → 0.614), with small changes on the test sets.
 
+## Future improvements
+
+- **Add a transformer**: fine-tune a tweet-pretrained model such as [BERTweet](https://huggingface.co/vinai/bertweet-base) on lightly cleaned text. Similar models report around 0.72 on this task. Avoid checkpoints already fine-tuned for tweet sentiment, as they were likely trained on these test sets.
+- **LSTM**:
+  - keep emoji names as separate words (they currently become one unknown token);
+  - mask padding in the attention layer;
+  - use Twitter GloVe without the 5,000-word cap;
+  - use lighter cleaning than the classic models.
+- **Classic models**: add character n-grams and bigrams to TF-IDF, use Twitter-specific sentiment lexicons, and mark negation.
+- **Ensembling**: average the models' predictions, as half of the competition's top ten did.
+
 ## Layout
 
 ```
