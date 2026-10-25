@@ -1,0 +1,22 @@
+name: nlp-sentiment-analysis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn=1.5
+  - nltk
+  - matplotlib
+  - seaborn
+  - tqdm
+  - ipykernel
+  - nbconvert
+  - pip
+  - pip:
+      - contractions
+      - emoji
+      # CUDA 12.8 build; for CPU only, remove this line to get the default wheel
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.7.1
