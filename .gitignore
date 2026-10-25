@@ -1,0 +1,27 @@
+# GloVe embeddings (~3 GB, files are over GitHub's 100 MB limit).
+# Re-download glove.6B.zip from https://nlp.stanford.edu/projects/glove/
+# and unzip into semeval-tweets/embeddings/ (the notebook only needs glove.6B.100d.txt).
+semeval-tweets/embeddings/
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# Office lock files
+~$*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Original coursework files (kept locally, not in the repo)
+CS918*
+Docs/2425_assignment2*
+REPO_SUMMARY.txt
