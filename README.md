@@ -79,6 +79,8 @@ Figures: [MaxEnt](figures/MaxEnt_ConfMat.png), [LinearSVC](figures/LSVC_ConfMat.
 - **The LSTM was validated on raw tweets.** A later cell reloaded the dev set without cleaning it, so the validation loss and early stopping ran on uncleaned text, unlike training.
 - **The best epoch was never kept.** `state_dict().copy()` is a shallow copy, so the "saved" weights kept changing, and they were never loaded back. The model is now deep-copied and restored.
 - **Training batches were the same every epoch.** The data is now shuffled each epoch, with a fixed random seed.
+- **The LSTM's attention included padding.** Shorter tweets spread some attention over padding tokens. Padding is now masked out before the softmax.
+- **Emojis became single unknown words.** Removing punctuation joined each emoji's name into one word ("smilingfacewithsmilingeyes") that isn't in GloVe. Emojis now become separate words ("smiling face with smiling eyes"). This changes the cleaning for every model.
 - **LinearSVC now uses V1**, which scored higher on dev than the V2 features it used before.
 - **Smaller fixes**: the embeddings path now works on Mac and Linux, only the NLTK data that's needed is downloaded, and the full grid search is off by default.
 
@@ -88,8 +90,7 @@ The classic models' scores are unchanged. The LSTM's dev score is about the same
 
 - **Add a transformer**: fine-tune a tweet-pretrained model such as [BERTweet](https://huggingface.co/vinai/bertweet-base) on lightly cleaned text. Similar models report around 0.72 on this task. Avoid checkpoints already fine-tuned for tweet sentiment, as they were likely trained on these test sets.
 - **LSTM**:
-  - keep emoji names as separate words (they currently become one unknown token);
-  - mask padding in the attention layer;
+  - pack padded sequences so the backward LSTM doesn't read padding first;
   - use Twitter GloVe without the 5,000-word cap;
   - use lighter cleaning than the classic models.
 - **Classic models**: add character n-grams and bigrams to TF-IDF, use Twitter-specific sentiment lexicons, and mark negation.
