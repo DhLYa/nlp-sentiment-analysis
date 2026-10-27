@@ -1,9 +1,11 @@
 Var,Model,Hyperparameters,F1 Macro Score
-1,MaxEnt,"{'C': 0.1, 'penalty': 'l2', 'solver': 'lbfgs'}",0.631
-2,MaxEnt,"{'C': 1, 'penalty': 'l1', 'solver': 'liblinear'}",0.618
+1,MaxEnt,"{'C': 0.1, 'penalty': 'l2', 'solver': 'lbfgs'}",0.628
+2,MaxEnt,"{'C': 1, 'penalty': 'l1', 'solver': 'liblinear'}",0.617
+3,MaxEnt,"{'C': 1, 'penalty': 'l2', 'solver': 'liblinear'}",0.627
 1,LinearSVC,"{'C': 0.1, 'dual': False, 'loss': 'squared_hinge', 'penalty': 'l1'}",0.623
-2,LinearSVC,"{'C': 0.1, 'dual': False, 'loss': 'squared_hinge', 'penalty': 'l2'}",0.614
-1,SGD,"{'alpha': 0.0001, 'eta0': 0.01, 'learning_rate': 'constant', 'loss': 'log_loss', 'penalty': 'l2'}",0.621
-2,MNB,"{'alpha': 0.5, 'fit_prior': False}",0.612
-1,MNB,"{'alpha': 0.5, 'fit_prior': True}",0.565
+2,LinearSVC,"{'C': 0.1, 'dual': False, 'loss': 'squared_hinge', 'penalty': 'l2'}",0.612
+3,LinearSVC,"{'C': 0.1, 'dual': False, 'loss': 'squared_hinge', 'penalty': 'l2'}",0.629
+1,SGD,"{'alpha': 0.0001, 'eta0': 0.01, 'learning_rate': 'constant', 'loss': 'log_loss', 'penalty': 'elasticnet'}",0.621
 2,SGD,"{'alpha': 0.0001, 'eta0': 0.01, 'learning_rate': 'optimal', 'loss': 'hinge', 'penalty': 'l2'}",0.61
+1,MNB,"{'alpha': 0.5, 'fit_prior': True}",0.563
+2,MNB,"{'alpha': 0.5, 'fit_prior': False}",0.611
