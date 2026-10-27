@@ -20,3 +20,5 @@ dependencies:
       # CUDA 12.8 build; for CPU only, remove this line to get the default wheel
       - --extra-index-url https://download.pytorch.org/whl/cu128
       - torch==2.7.1
+      # Pinned to 4.x: BERTweet only has a "slow" tokenizer, and this version is the one tested
+      - transformers==4.57.6
