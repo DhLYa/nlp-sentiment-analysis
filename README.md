@@ -89,6 +89,7 @@ Figures: [MaxEnt](figures/MaxEnt_ConfMat.png), [LinearSVC](figures/LSVC_ConfMat.
 - **The best epoch was never kept.** `state_dict().copy()` is a shallow copy, so the "saved" weights kept changing, and they were never loaded back. The model is now deep-copied and restored.
 - **Training batches were the same every epoch.** The data is now shuffled each epoch, with a fixed random seed. GPU training isn't fully deterministic, so LSTM scores can still vary by about 0.005 between runs.
 - **The LSTM's attention included padding.** Shorter tweets spread some attention over padding tokens. Padding is now masked out before the softmax.
+- **The LSTM read the padding.** The backward direction read all the padding before reaching a tweet's last word, so the same tweet scored differently depending on how much padding followed it. The sequences are now packed, so the LSTM only reads each tweet's real words.
 - **Emojis became single unknown words.** Removing punctuation joined each emoji's name into one word ("smilingfacewithsmilingeyes") that isn't in GloVe. Emojis now become separate words ("smiling face with smiling eyes"). This changes the cleaning for every model.
 - **The full grid search replaced the main models.** Its cells reused the main models' names, so with the search turned on, the test evaluation used whichever model the search trained last. The search now keeps its own copies.
 - **Character n-gram features (V3) were added**, and LinearSVC now uses them. It used V2 before.
@@ -102,7 +103,6 @@ Under the old scoring, the emoji change moved MaxEnt's scores by less than 0.005
 
 - **BERTweet**: try [BERTweet-large](https://huggingface.co/vinai/bertweet-large), and average several fine-tuning runs with different seeds, since single runs vary. Avoid checkpoints already fine-tuned for tweet sentiment, as they were likely trained on these test sets.
 - **LSTM**:
-  - pack padded sequences so the backward LSTM doesn't read padding first;
   - use Twitter GloVe without the 5,000-word cap;
   - use lighter cleaning than the classic models.
 - **Classic models**: build character n-grams from less-cleaned text (they currently see the cleaned, lemmatised text), and match lexicon words before lemmatising.
