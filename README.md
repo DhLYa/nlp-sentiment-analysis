@@ -68,7 +68,7 @@ The score is SemEval's official metric: macro-F1 over the **positive and negativ
 - **The earlier models drop about 0.05 on test 3, but BERTweet drops only about 0.02.** Test 3 seems to use vocabulary the training set doesn't cover well, which BERTweet's pre-training does.
 - **Compared with the original competitions**, the classic models and LSTM score below the top systems, while BERTweet scores above them. BERTweet benefits from years of later research and from pre-training on hundreds of millions of tweets. Those tweets date from 2012–2019, so some of the test tweets' text (but not their labels) may have been part of it.
 
-Full grid-search results on dev, from [`Model Stats.csv`](Model%20Stats.csv). **These are from before the scoring fix** (see [Changes since the original](#changes-since-the-original)), so every score is about 0.04 too low. They'll be updated, with V4 added, after the next full grid search.
+Full grid-search results on dev, from [`Model Stats.csv`](Model%20Stats.csv). **These are from before the scoring fix** (see [Changes since the original](#changes-since-the-original)), so every score is about 0.04 too low. They'll be updated after the next full grid search, which also adds V4 and each model's test scores.
 
 | Model | V1 (counts) | V2 (TF-IDF) | V3 (word + char TF-IDF) |
 |---|---|---|---|
@@ -114,8 +114,9 @@ Under the old scoring, the emoji change moved MaxEnt's scores by less than 0.005
 nlp-sentiment-analysis/
 ├── sentiment_analysis.ipynb       # preprocessing, features, models, evaluation
 ├── environment.yml                # conda environment
-├── Model Stats.csv                # full grid-search results on dev
-├── figures/                       # confusion matrices and LSTM loss curve
+├── Results.csv                    # every model on dev and test 1-3 (written by the notebook)
+├── Model Stats.csv                # full grid-search results (written by the full search)
+├── figures/                       # confusion matrices and LSTM loss curve (written by the notebook)
 ├── semeval-tweets/
 │   ├── twitter-*.txt              # train, dev and test 1-3
 │   ├── Read in.ipynb              # early exploration notebook
@@ -137,6 +138,10 @@ conda activate nlp-sentiment-analysis
 2. **Get the NRC lexicons** (optional, only needed for V4): download the NRC Hashtag Sentiment Lexicon (v0.1) and the NRC Emoticon Lexicon (v1.0) from [Saif Mohammad's lexicon page](https://saifmohammad.com/WebPages/lexicons.html) and unzip both into `semeval-tweets/lexicons/`. Their terms allow non-commercial research use but not redistribution, so they aren't in git. Without them, the notebook skips V4.
 3. **Run** `sentiment_analysis.ipynb` from the repo root, with the `nlp-sentiment-analysis` environment as the kernel.
 
-A full run takes about 10–15 minutes with a GPU (RTX 4070 SUPER), most of it fine-tuning BERTweet. The first run downloads BERTweet (~540 MB); set `run_bertweet = False` to skip it, which is worth doing without a GPU. Set `full_model_search = True` to repeat the grid search over every model and feature set. That takes much longer, since the SGD search alone is 972 fits per feature set.
+A full run takes about 10–15 minutes with a GPU (RTX 4070 SUPER), most of it fine-tuning BERTweet. It writes `Results.csv` and the figures in `figures/`. The paths and options are in the settings cell at the top:
+- `run_bertweet = False` skips BERTweet, which is worth doing without a GPU. The first run downloads it (~540 MB).
+- `full_model_search = True` repeats the grid search over every model and feature set and writes `Model Stats.csv`. That takes much longer, since the SGD search alone is 972 fits per feature set.
+
+To score a trained model on another file in the same format, run `eval_on_file("path/to/file.txt", select_model="BERTweet")` at the end of the notebook. The model names are `"MaxEnt"`, `"LSVC"`, `"LSTM"` and `"BERTweet"`.
 
 `environment.yml` installs the CUDA 12.8 build of PyTorch. For a CPU-only machine, remove the `--extra-index-url` line; the LSTM still trains, just more slowly.
