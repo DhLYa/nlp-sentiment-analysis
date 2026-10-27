@@ -111,7 +111,8 @@ nlp-sentiment-analysis/
 ├── semeval-tweets/
 │   ├── twitter-*.txt              # train, dev and test 1-3
 │   ├── Read in.ipynb              # early exploration notebook
-│   └── embeddings/                # not in git: GloVe vectors (see below)
+│   ├── embeddings/                # not in git: GloVe vectors (see below)
+│   └── lexicons/                  # not in git: NRC sentiment lexicons (see below)
 └── Docs/
     ├── 1912.00741v1.pdf           # SemEval 2017 Task 4 paper
     └── semeval-tweets.tar.bz2     # original data archive
@@ -125,7 +126,8 @@ conda activate nlp-sentiment-analysis
 ```
 
 1. **Get GloVe**: download `glove.6B.zip` from [Stanford NLP](https://nlp.stanford.edu/projects/glove/) and put `glove.6B.100d.txt` in `semeval-tweets/embeddings/`. It's ~350 MB, too large for git.
-2. **Run** `sentiment_analysis.ipynb` from the repo root, with the `nlp-sentiment-analysis` environment as the kernel.
+2. **Get the NRC lexicons** (optional, only needed for V4): download the NRC Hashtag Sentiment Lexicon (v0.1) and the NRC Emoticon Lexicon (v1.0) from [Saif Mohammad's lexicon page](https://saifmohammad.com/WebPages/lexicons.html) and unzip both into `semeval-tweets/lexicons/`. Their terms allow non-commercial research use but not redistribution, so they aren't in git. Without them, the notebook skips V4.
+3. **Run** `sentiment_analysis.ipynb` from the repo root, with the `nlp-sentiment-analysis` environment as the kernel.
 
 A full run takes a few minutes with a GPU (RTX 4070 SUPER). Set `full_model_search = True` to repeat the grid search over every model and feature set. That takes much longer, since the SGD search alone is 972 fits per feature set.
 

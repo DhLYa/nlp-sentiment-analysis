@@ -3,6 +3,10 @@
 # and unzip into semeval-tweets/embeddings/ (the notebook only needs glove.6B.100d.txt).
 semeval-tweets/embeddings/
 
+# NRC sentiment lexicons (licence doesn't allow redistribution).
+# Download from https://saifmohammad.com/WebPages/lexicons.html (see README).
+semeval-tweets/lexicons/
+
 # Python / Jupyter
 __pycache__/
 *.py[cod]
