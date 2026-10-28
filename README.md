@@ -59,7 +59,7 @@ The score is SemEval's official metric: macro-F1 over the **positive and negativ
 |---|---|---|---|---|---|
 | MaxEnt (V1) | 0.672 | 0.653 | 0.657 | 0.601 | 0.637 |
 | LinearSVC (V3) | 0.672 | 0.652 | 0.669 | 0.608 | 0.643 |
-| LSTM + attention | 0.643 | 0.653 | 0.627 | 0.586 | 0.622 |
+| LSTM + attention | 0.648 | 0.658 | 0.626 | 0.587 | 0.624 |
 | **BERTweet** | **0.765** | **0.771** | **0.780** | **0.752** | **0.768** |
 
 - **BERTweet is the best model by a wide margin**: 0.125 above the best classic model on the test average. Its test scores match its dev score, so choosing its epoch on dev didn't inflate the result. It rarely mixes up positive and negative; most of its errors involve neutral ([confusion matrix](figures/BERTweet_ConfMat.png)).
@@ -87,7 +87,7 @@ Figures: [MaxEnt](figures/MaxEnt_ConfMat.png), [LinearSVC](figures/LSVC_ConfMat.
 - **75 training tweets were merged into 16 rows.** Quote marks in tweets were treated as quoted fields, joining the lines in between. All 45,101 training tweets now load.
 - **The LSTM was validated on raw tweets.** A later cell reloaded the dev set without cleaning it, so the validation loss and early stopping ran on uncleaned text, unlike training.
 - **The best epoch was never kept.** `state_dict().copy()` is a shallow copy, so the "saved" weights kept changing, and they were never loaded back. The model is now deep-copied and restored.
-- **Training batches were the same every epoch.** The data is now shuffled each epoch, with a fixed random seed. GPU training isn't fully deterministic, so LSTM scores can still vary by about 0.005 between runs.
+- **Training batches were the same every epoch.** The data is now shuffled each epoch, with a fixed random seed. GPU training isn't fully deterministic, and the 132 vocabulary words missing from GloVe get random starting vectors, so LSTM scores can still vary by about 0.01 between runs.
 - **The LSTM's attention included padding.** Shorter tweets spread some attention over padding tokens. Padding is now masked out before the softmax.
 - **The LSTM read the padding.** The backward direction read all the padding before reaching a tweet's last word, so the same tweet scored differently depending on how much padding followed it. The sequences are now packed, so the LSTM only reads each tweet's real words.
 - **Emojis became single unknown words.** Removing punctuation joined each emoji's name into one word ("smilingfacewithsmilingeyes") that isn't in GloVe. Emojis now become separate words ("smiling face with smiling eyes"). This changes the cleaning for every model.
